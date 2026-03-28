@@ -12,10 +12,10 @@ import pandas as pd
 from . import cleaning, detection, eda
 
 SCENARIO_LABELS = {
-    'scenario_burst_similar': 'rafaga con montos similares',
-    'scenario_burst_anomalous': 'rafaga anomala frente al historico',
+    'scenario_burst_similar': 'ráfaga con montos similares',
+    'scenario_burst_anomalous': 'ráfaga anómala frente al histórico',
     'scenario_material_amount': 'monto agregado material',
-    'scenario_destination_dispersion': 'dispersion entre sedes o destinos',
+    'scenario_destination_dispersion': 'dispersión entre sedes o destinos',
 }
 
 ALERT_LEVEL_PRIORITY = {
@@ -35,6 +35,8 @@ REPORT_STYLES = """
     --line: rgba(32, 0, 32, 0.10);
     --accent: #da0081;
     --accent-2: #2b0d2b;
+    --warning: #f59e0b;
+    --success: #0f8b6d;
     --danger: #da0081;
     --shadow: 0 18px 48px rgba(32, 0, 32, 0.08);
     --radius: 22px;
@@ -78,6 +80,20 @@ REPORT_STYLES = """
 
   .hero-card {
     padding: 30px;
+  }
+
+  .hero-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .hero-logo {
+    display: block;
+    width: 132px;
+    max-width: 100%;
+    height: auto;
   }
 
   .eyebrow {
@@ -149,6 +165,31 @@ REPORT_STYLES = """
     padding: 20px;
   }
 
+  .metric-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .metric-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 18px;
+    background: rgba(32, 0, 32, 0.06);
+  }
+
+  .metric-context {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
   .metric-label {
     color: var(--muted);
     font-size: 13px;
@@ -170,8 +211,44 @@ REPORT_STYLES = """
     line-height: 1.5;
   }
 
+  .metric-card.tone-neutral {
+    border-top: 4px solid rgba(32, 0, 32, 0.12);
+  }
+
+  .metric-card.tone-accent {
+    border-top: 4px solid var(--accent);
+  }
+
+  .metric-card.tone-warning {
+    border-top: 4px solid var(--warning);
+  }
+
+  .metric-card.tone-high {
+    border-top: 4px solid var(--danger);
+  }
+
+  .metric-card.tone-success {
+    border-top: 4px solid var(--success);
+  }
+
+  .metric-card.tone-accent .metric-icon,
+  .metric-card.tone-high .metric-icon,
+  .metric-card.tone-warning .metric-icon,
+  .metric-card.tone-success .metric-icon {
+    color: var(--ink);
+  }
+
   .section {
     margin-top: 28px;
+  }
+
+  .section-kicker {
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
   }
 
   .section-head {
@@ -219,6 +296,139 @@ REPORT_STYLES = """
     margin: 0 0 14px;
     color: var(--muted);
     line-height: 1.5;
+  }
+
+  .story-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .story-card {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(236, 231, 245, 0.58);
+    border: 1px solid rgba(32, 0, 32, 0.06);
+  }
+
+  .story-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    font-size: 20px;
+    background: rgba(218, 0, 129, 0.10);
+  }
+
+  .story-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .story-value {
+    margin: 4px 0 6px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent-2);
+  }
+
+  .story-hint {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
+  .progress-list,
+  .rank-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .progress-item,
+  .rank-item {
+    padding: 12px 14px;
+    border-radius: 18px;
+    background: rgba(236, 231, 245, 0.44);
+    border: 1px solid rgba(32, 0, 32, 0.06);
+  }
+
+  .progress-head,
+  .rank-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .progress-label,
+  .rank-label-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .progress-value,
+  .rank-value {
+    font-weight: 800;
+    color: var(--accent-2);
+    white-space: nowrap;
+  }
+
+  .rank-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .progress-track,
+  .rank-track {
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(32, 0, 32, 0.08);
+  }
+
+  .progress-fill,
+  .rank-fill {
+    height: 100%;
+    border-radius: 999px;
+    min-width: 8px;
+    background: linear-gradient(90deg, rgba(218, 0, 129, 0.88), rgba(43, 13, 43, 0.82));
+  }
+
+  .progress-fill.tone-warning,
+  .rank-fill.tone-warning {
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.95), rgba(218, 0, 129, 0.85));
+  }
+
+  .progress-fill.tone-high,
+  .rank-fill.tone-high {
+    background: linear-gradient(90deg, rgba(218, 0, 129, 0.95), rgba(128, 0, 64, 0.88));
+  }
+
+  .progress-fill.tone-success,
+  .rank-fill.tone-success {
+    background: linear-gradient(90deg, rgba(15, 139, 109, 0.92), rgba(32, 0, 32, 0.82));
+  }
+
+  .progress-note,
+  .rank-note {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
   }
 
   table {
@@ -336,18 +546,18 @@ REPORT_STYLES = """
   }
 
   .chip.media {
-    background: rgba(43, 13, 43, 0.10);
-    color: var(--accent-2);
+    background: rgba(245, 158, 11, 0.14);
+    color: var(--warning);
   }
 
   .chip.pre_alerta {
-    background: rgba(236, 231, 245, 0.96);
-    color: var(--accent);
+    background: rgba(43, 13, 43, 0.08);
+    color: var(--accent-2);
   }
 
   .chip.sin_alerta {
-    background: rgba(32, 0, 32, 0.06);
-    color: var(--muted);
+    background: rgba(15, 139, 109, 0.10);
+    color: var(--success);
   }
 
   .bar-chart {
@@ -572,7 +782,17 @@ REPORT_SCRIPT = """
     const container = document.getElementById('filtered-metrics');
 
     if (!rows.length) {
-      container.innerHTML = '<div class="panel metric-card"><div class="metric-label">Sin resultados</div><div class="metric-value">0</div><div class="metric-hint">Ajusta los filtros para volver a ver casos.</div></div>';
+      container.innerHTML = `
+        <div class="panel metric-card tone-neutral">
+          <div class="metric-card-head">
+            <span class="metric-icon">🔎</span>
+            <span class="metric-context">Subconjunto filtrado</span>
+          </div>
+          <div class="metric-label">Sin resultados</div>
+          <div class="metric-value">0</div>
+          <div class="metric-hint">Ajusta los filtros para volver a ver casos.</div>
+        </div>
+      `;
       return;
     }
 
@@ -584,40 +804,62 @@ REPORT_SCRIPT = """
 
     const cards = [
       {
+        icon: '🔎',
+        context: 'Subconjunto filtrado',
         label: 'Casos visibles',
         value: formatInteger(rows.length),
         hint: 'Ventanas sospechosas que pasan los filtros.',
+        tone: 'neutral',
       },
       {
+        icon: '💰',
+        context: 'Impacto filtrado',
         label: 'Monto 24h visible',
         value: formatCurrency(totalAmount),
         hint: 'Suma acumulada de monto en las ventanas visibles.',
+        tone: 'accent',
       },
       {
-        label: 'Usuarios unicos',
+        icon: '👤',
+        context: 'Cobertura filtrada',
+        label: 'Usuarios únicos',
         value: formatInteger(uniqueUsers),
         hint: 'Usuarios distintos dentro del subconjunto filtrado.',
+        tone: 'neutral',
       },
       {
+        icon: '📈',
+        context: 'Intensidad media',
         label: 'Promedio tx por caso',
         value: formatDecimal(totalTransactions / rows.length),
         hint: 'Frecuencia media de transacciones por ventana.',
+        tone: 'warning',
       },
       {
+        icon: '🚨',
+        context: 'Escalamiento filtrado',
         label: 'Alertas altas',
         value: formatInteger(highAlerts),
-        hint: 'Casos con tres o mas escenarios activados.',
+        hint: 'Casos con tres o más escenarios activados.',
+        tone: 'high',
       },
       {
-        label: 'Max escenarios',
+        icon: '🧠',
+        context: 'Profundidad máxima',
+        label: 'Máx. escenarios',
         value: formatInteger(maxScenarioCount),
         hint: 'Mayor conteo de escenarios activos en una sola ventana.',
+        tone: 'accent',
       },
     ];
 
     container.innerHTML = cards.map((card) => {
       return `
-        <div class="panel metric-card">
+        <div class="panel metric-card tone-${escapeHtml(card.tone)}">
+          <div class="metric-card-head">
+            <span class="metric-icon">${escapeHtml(card.icon)}</span>
+            <span class="metric-context">${escapeHtml(card.context)}</span>
+          </div>
           <div class="metric-label">${escapeHtml(card.label)}</div>
           <div class="metric-value">${escapeHtml(card.value)}</div>
           <div class="metric-hint">${escapeHtml(card.hint)}</div>
@@ -741,7 +983,7 @@ REPORT_SCRIPT = """
     summary.innerHTML = `
       <span class="summary-pill">${formatInteger(rows.length)} casos visibles</span>
       <span class="summary-pill">Mostrando ${formatInteger(renderedRows.length)} filas</span>
-      <span class="summary-pill">Limite visual ${formatInteger(tableRowLimit)}</span>
+      <span class="summary-pill">Límite visual ${formatInteger(tableRowLimit)}</span>
     `;
 
     body.innerHTML = renderedRows.map((row) => {
@@ -959,6 +1201,7 @@ def build_top_alert_merchants(alert_cases: pd.DataFrame) -> pd.DataFrame:
             columns=[
                 'top_merchant_id',
                 'n_cases',
+                'pct_cases',
                 'high_alert_cases',
                 'total_amount_24h',
             ]
@@ -982,6 +1225,10 @@ def build_top_alert_merchants(alert_cases: pd.DataFrame) -> pd.DataFrame:
         n_cases=('top_merchant_id', 'size'),
         high_alert_cases=('alert_level', lambda values: values.eq('alta').sum()),
         total_amount_24h=('amount_24h', 'sum'),
+    )
+    merchant_df['pct_cases'] = 0.0
+    merchant_df['pct_cases'] = (
+        100 * merchant_df['n_cases'] / len(alert_cases)
     )
 
     merchant_df = merchant_df.sort_values(
@@ -1009,6 +1256,7 @@ def build_alert_type_summary(alert_cases: pd.DataFrame) -> pd.DataFrame:
             columns=[
                 'transaction_type',
                 'n_cases',
+                'pct_cases',
                 'high_alert_cases',
                 'total_amount_24h',
                 'avg_scenario_count',
@@ -1026,6 +1274,10 @@ def build_alert_type_summary(alert_cases: pd.DataFrame) -> pd.DataFrame:
         total_amount_24h=('amount_24h', 'sum'),
         avg_scenario_count=('scenario_count', 'mean'),
     )
+    type_summary_df['pct_cases'] = 0.0
+    type_summary_df['pct_cases'] = (
+        100 * type_summary_df['n_cases'] / len(alert_cases)
+    )
 
     type_summary_df = type_summary_df.sort_values(
         ['n_cases', 'total_amount_24h'],
@@ -1035,6 +1287,244 @@ def build_alert_type_summary(alert_cases: pd.DataFrame) -> pd.DataFrame:
     type_summary_df = type_summary_df.reset_index(drop=True)
 
     return type_summary_df
+
+
+def build_priority_funnel(
+    alert_table: pd.DataFrame,
+    alert_cases: pd.DataFrame,
+) -> pd.DataFrame:
+    """Construye un embudo operativo corto para el reporte.
+
+    Args:
+        alert_table: Tabla final del detector.
+        alert_cases: Casos con al menos un escenario activo.
+
+    Returns:
+        Tabla corta con etapas, volumen y proporcion sobre el total evaluado.
+    """
+    total_windows = len(alert_table)
+    suspicious_cases = len(alert_cases)
+    actionable_cases = int(alert_table['is_alert'].sum())
+    high_alert_cases = int(alert_table['alert_level'].eq('alta').sum())
+
+    funnel_rows = [
+        {
+            'icon': '🗂️',
+            'label': 'Ventanas evaluadas',
+            'value': total_windows,
+            'pct_total': _safe_pct(total_windows, total_windows),
+            'hint': 'Base completa consolidada por entidad y día.',
+            'tone': 'neutral',
+        },
+        {
+            'icon': '⚠️',
+            'label': 'Casos con señal',
+            'value': suspicious_cases,
+            'pct_total': _safe_pct(suspicious_cases, total_windows),
+            'hint': 'Ventanas con al menos un escenario activo.',
+            'tone': 'warning',
+        },
+        {
+            'icon': '🎯',
+            'label': 'Casos accionables',
+            'value': actionable_cases,
+            'pct_total': _safe_pct(actionable_cases, total_windows),
+            'hint': 'Casos en nivel media o alta para revisión.',
+            'tone': 'accent',
+        },
+        {
+            'icon': '🚨',
+            'label': 'Alertas altas',
+            'value': high_alert_cases,
+            'pct_total': _safe_pct(high_alert_cases, total_windows),
+            'hint': 'Casos con tres o más escenarios activos.',
+            'tone': 'high',
+        },
+    ]
+
+    funnel_df = pd.DataFrame(funnel_rows)
+
+    return funnel_df
+
+
+def build_scenario_importance(alert_cases: pd.DataFrame) -> pd.DataFrame:
+    """Resume que escenarios explican la mayor parte de los casos.
+
+    Args:
+        alert_cases: Tabla reducida de casos sospechosos.
+
+    Returns:
+        Tabla con frecuencia e impacto de cada escenario.
+    """
+    if alert_cases.empty:
+        return pd.DataFrame(
+            columns=[
+                'scenario_label',
+                'n_cases',
+                'pct_cases',
+                'avg_amount_24h',
+                'icon',
+                'tone',
+            ]
+        )
+
+    rows = []
+
+    for col, label in SCENARIO_LABELS.items():
+        scenario_mask = alert_cases[col] == 1
+        scenario_cases = int(scenario_mask.sum())
+        avg_amount = 0.0
+
+        if scenario_cases > 0:
+            avg_amount = float(alert_cases.loc[scenario_mask, 'amount_24h'].mean())
+
+        rows.append(
+            {
+                'scenario_label': label,
+                'n_cases': scenario_cases,
+                'pct_cases': _safe_pct(scenario_cases, len(alert_cases)),
+                'avg_amount_24h': avg_amount,
+                'icon': '🧠',
+                'tone': 'accent',
+            }
+        )
+
+    scenario_df = pd.DataFrame(rows)
+    scenario_df = scenario_df.sort_values(
+        ['n_cases', 'avg_amount_24h'],
+        ascending=[False, False],
+    )
+    scenario_df = scenario_df.reset_index(drop=True)
+
+    return scenario_df
+
+
+def build_scenario_depth_summary(alert_cases: pd.DataFrame) -> pd.DataFrame:
+    """Resume la profundidad de escenarios activados por caso.
+
+    Args:
+        alert_cases: Tabla reducida de casos sospechosos.
+
+    Returns:
+        Tabla con distribucion por numero de escenarios activos.
+    """
+    if alert_cases.empty:
+        return pd.DataFrame(
+            columns=[
+                'scenario_bucket',
+                'n_cases',
+                'pct_cases',
+                'avg_amount_24h',
+                'icon',
+                'tone',
+            ]
+        )
+
+    depth_df = alert_cases.groupby(
+        'scenario_count',
+        as_index=False,
+    )
+
+    depth_df = depth_df.agg(
+        n_cases=('scenario_count', 'size'),
+        avg_amount_24h=('amount_24h', 'mean'),
+    )
+
+    depth_df['pct_cases'] = 0.0
+    depth_df['pct_cases'] = (
+        100 * depth_df['n_cases'] / len(alert_cases)
+    )
+    depth_df['scenario_bucket'] = depth_df['scenario_count'].astype(int).astype(str)
+    depth_df['scenario_bucket'] = depth_df['scenario_bucket'] + ' escenario'
+    depth_df.loc[
+        depth_df['scenario_count'] != 1,
+        'scenario_bucket',
+    ] = depth_df.loc[
+        depth_df['scenario_count'] != 1,
+        'scenario_bucket',
+    ] + 's'
+
+    depth_df['icon'] = '⚙️'
+    depth_df['tone'] = 'neutral'
+    depth_df.loc[depth_df['scenario_count'] >= 2, 'tone'] = 'warning'
+    depth_df.loc[depth_df['scenario_count'] >= 3, 'tone'] = 'high'
+
+    depth_df = depth_df.sort_values('scenario_count')
+    depth_df = depth_df.reset_index(drop=True)
+
+    return depth_df
+
+
+def build_story_highlights(alert_cases: pd.DataFrame) -> list[dict[str, str]]:
+    """Construye hallazgos cortos para abrir la historia del dashboard.
+
+    Args:
+        alert_cases: Tabla reducida de casos sospechosos.
+
+    Returns:
+        Lista de tarjetas con insight resumido.
+    """
+    if alert_cases.empty:
+        return [
+            {
+                'icon': '🔎',
+                'title': 'Sin señales relevantes',
+                'value': 'No hay casos sospechosos',
+                'hint': 'El detector no encontró ventanas con escenarios activos en este corte.',
+            }
+        ]
+
+    daily_df = alert_cases.groupby(
+        'transaction_day',
+        as_index=False,
+    )
+    daily_df = daily_df.agg(
+        n_cases=('transaction_day', 'size'),
+        total_amount_24h=('amount_24h', 'sum'),
+    )
+    daily_df = daily_df.sort_values(
+        ['n_cases', 'total_amount_24h'],
+        ascending=[False, False],
+    )
+    peak_day_row = daily_df.iloc[0]
+
+    merchant_df = build_top_alert_merchants(alert_cases)
+    top_merchant_row = merchant_df.iloc[0]
+
+    scenario_df = build_scenario_importance(alert_cases)
+    top_scenario_row = scenario_df.iloc[0]
+
+    highlight_cards = [
+        {
+            'icon': '📈',
+            'title': 'Pico operativo',
+            'value': _format_date(peak_day_row['transaction_day']),
+            'hint': (
+                f"{_format_int(peak_day_row['n_cases'])} casos sospechosos "
+                f"y {_format_currency(peak_day_row['total_amount_24h'])} agregados."
+            ),
+        },
+        {
+            'icon': '🏪',
+            'title': 'Mayor concentración',
+            'value': str(top_merchant_row['top_merchant_id']),
+            'hint': (
+                f"{_format_int(top_merchant_row['n_cases'])} casos y "
+                f"{_format_pct(top_merchant_row['pct_cases'])} del universo sospechoso."
+            ),
+        },
+        {
+            'icon': '🧠',
+            'title': 'Patrón dominante',
+            'value': str(top_scenario_row['scenario_label']),
+            'hint': (
+                f"Presente en {_format_pct(top_scenario_row['pct_cases'])} "
+                f"de los casos con escenario activo."
+            ),
+        },
+    ]
+
+    return highlight_cards
 
 
 def build_hero_metrics(
@@ -1057,32 +1547,48 @@ def build_hero_metrics(
     suspicious_cases = len(alert_cases_df)
     actionable_cases = int(alert_table['is_alert'].sum())
     high_alert_cases = int(alert_table['alert_level'].eq('alta').sum())
+    suspicious_amount = float(alert_cases_df['amount_24h'].sum())
 
     hero_metrics = [
         {
-            'label': 'Base analizada',
+            'label': 'Transacciones limpias',
             'value': _format_int(clean_overview_row['n_transactions']),
-            'hint': 'Transacciones limpias que entran al detector.',
-        },
-        {
-            'label': 'Usuarios unicos',
-            'value': _format_int(clean_overview_row['n_users']),
-            'hint': 'Cobertura observada despues de limpieza.',
+            'hint': 'Base depurada que alimenta el detector.',
+            'icon': '🗂️',
+            'context': 'Cobertura operativa',
+            'tone': 'neutral',
         },
         {
             'label': 'Casos sospechosos',
             'value': _format_int(suspicious_cases),
             'hint': 'Ventanas con al menos un escenario activo.',
+            'icon': '⚠️',
+            'context': 'Señal detectada',
+            'tone': 'warning',
         },
         {
-            'label': 'Alertas media o alta',
+            'label': 'Casos accionables',
             'value': _format_int(actionable_cases),
-            'hint': 'Casos priorizados para revision manual.',
+            'hint': 'Casos en nivel media o alta para revisión.',
+            'icon': '🎯',
+            'context': 'Priorización',
+            'tone': 'accent',
         },
         {
             'label': 'Alertas altas',
             'value': _format_int(high_alert_cases),
-            'hint': 'Casos con tres o mas escenarios activados.',
+            'hint': 'Casos con tres o más escenarios activados.',
+            'icon': '🚨',
+            'context': 'Escalamiento',
+            'tone': 'high',
+        },
+        {
+            'label': 'Monto 24h bajo señal',
+            'value': _format_currency(suspicious_amount),
+            'hint': 'Monto agregado observado en ventanas sospechosas.',
+            'icon': '💰',
+            'context': 'Impacto potencial',
+            'tone': 'accent',
         },
     ]
 
@@ -1104,11 +1610,12 @@ def build_alert_hero_metrics(
     """
     actionable_cases = int(alert_table['is_alert'].sum())
     high_alert_cases = int(alert_table['alert_level'].eq('alta').sum())
+    suspicious_amount = float(alert_cases_df['amount_24h'].sum())
 
     if 'user_id' in alert_cases_df.columns:
         n_entities = alert_cases_df['user_id'].nunique()
         entity_label = 'Usuarios con caso'
-        entity_hint = 'Usuarios distintos dentro de los casos sospechosos.'
+        entity_hint = 'Usuarios distintos dentro del universo sospechoso.'
     else:
         n_entities = len(alert_cases_df)
         entity_label = 'Casos visibles'
@@ -1118,27 +1625,50 @@ def build_alert_hero_metrics(
         {
             'label': 'Ventanas evaluadas',
             'value': _format_int(len(alert_table)),
-            'hint': 'Filas consolidadas por entidad y dia en la salida del modelo.',
+            'hint': 'Filas consolidadas por entidad y día en la salida del detector.',
+            'icon': '🧾',
+            'context': 'Cobertura operativa',
+            'tone': 'neutral',
         },
         {
             'label': 'Casos sospechosos',
             'value': _format_int(len(alert_cases_df)),
             'hint': 'Ventanas con al menos un escenario activo.',
+            'icon': '⚠️',
+            'context': 'Señal detectada',
+            'tone': 'warning',
         },
         {
             'label': 'Casos accionables',
             'value': _format_int(actionable_cases),
-            'hint': 'Casos en nivel media o alta para revision manual.',
+            'hint': 'Casos en nivel media o alta para revisión manual.',
+            'icon': '🎯',
+            'context': 'Priorización',
+            'tone': 'accent',
         },
         {
             'label': 'Alertas altas',
             'value': _format_int(high_alert_cases),
-            'hint': 'Casos con tres o mas escenarios activados.',
+            'hint': 'Casos con tres o más escenarios activados.',
+            'icon': '🚨',
+            'context': 'Escalamiento',
+            'tone': 'high',
+        },
+        {
+            'label': 'Monto 24h bajo señal',
+            'value': _format_currency(suspicious_amount),
+            'hint': 'Monto agregado observado en ventanas sospechosas.',
+            'icon': '💰',
+            'context': 'Impacto potencial',
+            'tone': 'accent',
         },
         {
             'label': entity_label,
             'value': _format_int(n_entities),
             'hint': entity_hint,
+            'icon': '👤',
+            'context': 'Cobertura de entidades',
+            'tone': 'neutral',
         },
     ]
 
@@ -1175,6 +1705,14 @@ def build_report_payload_from_alert_table(
         alert_table=alert_table,
         alert_cases_df=alert_cases_df,
     )
+    top_alert_merchants_df = build_top_alert_merchants(alert_cases_df)
+    priority_funnel_df = build_priority_funnel(
+        alert_table=alert_table,
+        alert_cases=alert_cases_df,
+    )
+    scenario_importance_df = build_scenario_importance(alert_cases_df)
+    scenario_depth_df = build_scenario_depth_summary(alert_cases_df)
+    story_highlights = build_story_highlights(alert_cases_df)
 
     date_range = (
         f"{_format_date(alert_table['transaction_day'].min())}"
@@ -1185,11 +1723,11 @@ def build_report_payload_from_alert_table(
         'alert_level_monitoring': detection.build_alert_level_monitoring_table(
             alert_table=alert_table,
         ),
-        'top_scenario_counts': detection.build_top_scenario_counts(
-            alert_table=alert_table,
-            top_n=10,
-        ),
+        'top_alert_merchants': top_alert_merchants_df,
         'alert_type_summary': build_alert_type_summary(alert_cases_df),
+        'priority_funnel': priority_funnel_df,
+        'scenario_importance': scenario_importance_df,
+        'scenario_depth': scenario_depth_df,
     }
 
     payload = {
@@ -1203,6 +1741,7 @@ def build_report_payload_from_alert_table(
         'hero_metrics': hero_metrics,
         'tables': tables,
         'alert_cases': alert_cases_df,
+        'story_highlights': story_highlights,
     }
 
     return payload
@@ -1234,6 +1773,13 @@ def build_report_payload_from_artifacts(
     alert_cases_df = build_alert_cases_table(alert_table)
     top_alert_merchants_df = build_top_alert_merchants(alert_cases_df)
     alert_type_summary_df = build_alert_type_summary(alert_cases_df)
+    priority_funnel_df = build_priority_funnel(
+        alert_table=alert_table,
+        alert_cases=alert_cases_df,
+    )
+    scenario_importance_df = build_scenario_importance(alert_cases_df)
+    scenario_depth_df = build_scenario_depth_summary(alert_cases_df)
+    story_highlights = build_story_highlights(alert_cases_df)
     clean_overview_row = summary_tables['clean_overview'].iloc[0]
 
     date_range = (
@@ -1244,6 +1790,9 @@ def build_report_payload_from_artifacts(
     tables = dict(summary_tables)
     tables['top_alert_merchants'] = top_alert_merchants_df
     tables['alert_type_summary'] = alert_type_summary_df
+    tables['priority_funnel'] = priority_funnel_df
+    tables['scenario_importance'] = scenario_importance_df
+    tables['scenario_depth'] = scenario_depth_df
 
     payload = {
         'metadata': {
@@ -1256,6 +1805,7 @@ def build_report_payload_from_artifacts(
         'hero_metrics': hero_metrics,
         'tables': tables,
         'alert_cases': alert_cases_df,
+        'story_highlights': story_highlights,
     }
 
     return payload
@@ -1327,11 +1877,6 @@ def build_report_payload(
         alert_table=alert_table,
     )
 
-    top_scenario_counts_df = detection.build_top_scenario_counts(
-        alert_table=alert_table,
-        top_n=10,
-    )
-
     alert_cases_df = build_alert_cases_table(alert_table)
     top_alert_merchants_df = build_top_alert_merchants(alert_cases_df)
     alert_type_summary_df = build_alert_type_summary(alert_cases_df)
@@ -1349,7 +1894,6 @@ def build_report_payload(
         'user_activity_summary': user_activity_summary_df,
         'window_feature_distribution': window_feature_distribution_df,
         'alert_level_monitoring': alert_level_monitoring_df,
-        'top_scenario_counts': top_scenario_counts_df,
         'top_alert_merchants': top_alert_merchants_df,
         'alert_type_summary': alert_type_summary_df,
     }
@@ -1383,61 +1927,103 @@ def render_html_report(
     metadata = report_payload['metadata']
     tables = report_payload['tables']
     alert_cases_df = report_payload['alert_cases']
+    story_highlights = report_payload['story_highlights']
 
     hero_cards_html = ''.join(
         _render_metric_card(metric)
         for metric in report_payload['hero_metrics']
     )
 
-    alert_monitoring_html = _render_table(
-        data=tables['alert_level_monitoring'],
-        columns=[
-            ('alert_level', 'Nivel'),
-            ('volume', 'Volumen'),
-            ('pct_total', '% total'),
-            ('avg_daily_volume', 'Promedio diario'),
-            ('avg_daily_rate', 'Tasa diaria'),
-            ('p95_daily_volume', 'P95 diario'),
-        ],
-        formatters={
-            'volume': _format_int,
-            'pct_total': _format_pct,
-            'avg_daily_volume': _format_decimal,
-            'avg_daily_rate': _format_ratio_pct,
-            'p95_daily_volume': _format_decimal,
-        },
+    story_highlights_html = _render_story_cards(story_highlights)
+
+    priority_funnel_html = _render_progress_list(
+        tables['priority_funnel'],
     )
 
-    scenario_counts_html = _render_table(
-        data=tables['top_scenario_counts'],
-        columns=[
-            ('scenario_count', 'Escenarios'),
-            ('alert_level', 'Nivel'),
-            ('n_cases', 'Casos'),
-            ('pct_cases', '% casos'),
-        ],
-        formatters={
-            'scenario_count': _format_int,
-            'n_cases': _format_int,
-            'pct_cases': _format_pct,
-        },
+    level_story_df = tables['alert_level_monitoring'].loc[
+        tables['alert_level_monitoring']['volume'] > 0,
+        :,
+    ]
+    level_story_df = level_story_df.reset_index(drop=True)
+    level_story_df['icon'] = level_story_df['alert_level'].astype(str)
+    level_story_df['tone'] = 'neutral'
+    level_story_df.loc[level_story_df['alert_level'] == 'alta', 'icon'] = '🚨'
+    level_story_df.loc[level_story_df['alert_level'] == 'media', 'icon'] = '🎯'
+    level_story_df.loc[level_story_df['alert_level'] == 'pre_alerta', 'icon'] = '👀'
+    level_story_df.loc[level_story_df['alert_level'] == 'sin_alerta', 'icon'] = '✅'
+    level_story_df.loc[level_story_df['alert_level'] == 'alta', 'tone'] = 'high'
+    level_story_df.loc[level_story_df['alert_level'] == 'media', 'tone'] = 'warning'
+    level_story_df.loc[level_story_df['alert_level'] == 'sin_alerta', 'tone'] = 'success'
+
+    level_monitoring_html = _render_rank_bars(
+        data=level_story_df,
+        label_col='alert_level',
+        value_col='volume',
+        width_col='pct_total',
+        icon_col='icon',
+        tone_col='tone',
+        value_formatter=_format_int,
+        note_builder=lambda row: (
+            f"{_format_pct(row['pct_total'])} del total | "
+            f"promedio diario {_format_decimal(row['avg_daily_volume'])} | "
+            f"P95 {_format_decimal(row['p95_daily_volume'])}"
+        ),
     )
 
-    alert_type_summary_html = _render_table(
+    scenario_depth_html = _render_rank_bars(
+        data=tables['scenario_depth'],
+        label_col='scenario_bucket',
+        value_col='n_cases',
+        width_col='pct_cases',
+        icon_col='icon',
+        tone_col='tone',
+        value_formatter=_format_int,
+        note_builder=lambda row: (
+            f"{_format_pct(row['pct_cases'])} de los casos sospechosos | "
+            f"monto medio {_format_currency(row['avg_amount_24h'])}"
+        ),
+    )
+
+    scenario_importance_html = _render_rank_bars(
+        data=tables['scenario_importance'],
+        label_col='scenario_label',
+        value_col='n_cases',
+        width_col='pct_cases',
+        icon_col='icon',
+        tone_col='tone',
+        value_formatter=_format_int,
+        note_builder=lambda row: (
+            f"{_format_pct(row['pct_cases'])} de los casos sospechosos | "
+            f"monto medio {_format_currency(row['avg_amount_24h'])}"
+        ),
+    )
+
+    alert_type_summary_html = _render_rank_bars(
         data=tables['alert_type_summary'],
-        columns=[
-            ('transaction_type', 'Tipo'),
-            ('n_cases', 'Casos'),
-            ('high_alert_cases', 'Altas'),
-            ('total_amount_24h', 'Monto 24h'),
-            ('avg_scenario_count', 'Promedio escenarios'),
-        ],
-        formatters={
-            'n_cases': _format_int,
-            'high_alert_cases': _format_int,
-            'total_amount_24h': _format_currency,
-            'avg_scenario_count': _format_decimal,
-        },
+        label_col='transaction_type',
+        value_col='n_cases',
+        width_col='pct_cases',
+        icon_col=None,
+        tone_col=None,
+        value_formatter=_format_int,
+        note_builder=lambda row: (
+            f"{_format_pct(row['pct_cases'])} de los casos | "
+            f"{_format_int(row['high_alert_cases'])} alertas altas | "
+            f"monto {_format_currency(row['total_amount_24h'])}"
+        ),
+    )
+
+    top_alert_merchants_html = _render_rank_bars(
+        data=tables['top_alert_merchants'],
+        label_col='top_merchant_id',
+        value_col='n_cases',
+        width_col='pct_cases',
+        value_formatter=_format_int,
+        note_builder=lambda row: (
+            f"{_format_pct(row['pct_cases'])} de los casos | "
+            f"{_format_int(row['high_alert_cases'])} alertas altas | "
+            f"monto {_format_currency(row['total_amount_24h'])}"
+        ),
     )
 
     client_payload = {
@@ -1462,9 +2048,13 @@ def render_html_report(
         title=title,
         metadata=metadata,
         hero_cards_html=hero_cards_html,
-        alert_monitoring_html=alert_monitoring_html,
-        scenario_counts_html=scenario_counts_html,
+        story_highlights_html=story_highlights_html,
+        priority_funnel_html=priority_funnel_html,
+        level_monitoring_html=level_monitoring_html,
+        scenario_depth_html=scenario_depth_html,
+        scenario_importance_html=scenario_importance_html,
         alert_type_summary_html=alert_type_summary_html,
+        top_alert_merchants_html=top_alert_merchants_html,
         client_payload_json=client_payload_json,
     )
 
@@ -1478,16 +2068,20 @@ def write_html_report(html_content: str, output_path: str | Path) -> None:
     """
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html_content, encoding='utf-8')
+    output_path.write_text(html_content, encoding='utf-8-sig')
 
 
 def _build_html_document(
     title: str,
     metadata: dict[str, Any],
     hero_cards_html: str,
-    alert_monitoring_html: str,
-    scenario_counts_html: str,
+    story_highlights_html: str,
+    priority_funnel_html: str,
+    level_monitoring_html: str,
+    scenario_depth_html: str,
+    scenario_importance_html: str,
     alert_type_summary_html: str,
+    top_alert_merchants_html: str,
     client_payload_json: str,
 ) -> str:
     """Arma el documento HTML completo a partir de fragmentos."""
@@ -1504,64 +2098,113 @@ def _build_html_document(
         '<div class="page-shell">',
         '<section class="hero">',
         '<article class="hero-card">',
-        '<p class="eyebrow">Detector heuristico de fraccionamiento</p>',
+        '<div class="hero-brand">',
+        '<img class="hero-logo" src="assets/nequi_logo.png" alt="Logo de Nequi">',
+        '</div>',
+        '<p class="eyebrow">Detector heurístico de fraccionamiento</p>',
         f'<h1>{html.escape(title)}</h1>',
         (
             '<p class="hero-lead">'
-            'Reporte HTML estatico para presentar el trabajo del notebook en una vista '
-            'ejecutiva, con foco en KPIs, metrica del detector y revision manual de casos.'
+            'HTML ejecutivo para contar la historia del detector: primero el impacto, '
+            'luego el comportamiento del modelo heurístico y, al final, el diagnóstico '
+            'que permite bajar hasta el caso puntual.'
             '</p>'
         ),
         '<div class="meta-row">',
         f'<span class="meta-pill">Archivo: {html.escape(metadata["dataset_name"])}</span>',
-        f'<span class="meta-pill">Periodo: {html.escape(metadata["date_range"])}</span>',
+        f'<span class="meta-pill">Período: {html.escape(metadata["date_range"])}</span>',
         f'<span class="meta-pill">Generado: {html.escape(metadata["generated_at"])}</span>',
         f'<span class="meta-pill">Entidad: {html.escape(metadata["entity_definition"])}</span>',
         '</div>',
         '</article>',
         '<aside class="hero-card">',
-        '<p class="eyebrow">Marco del reporte</p>',
-        '<h2>Resumen del detector</h2>',
+        '<p class="eyebrow">Cómo leer este HTML</p>',
+        '<h2>Secuencia de consumo</h2>',
         '<ul class="bullet-list">',
-        '<li>Ventana movil de 24 horas para detectar rafagas de transacciones pequenas.</li>',
-        '<li>Casos agregados por entidad analitica y priorizados con escenarios explicables.</li>',
-        '<li>Vista ejecutiva enfocada en alertas accionables y exploracion manual de casos.</li>',
+        '<li>Nivel 1: KPIs de cobertura, backlog y monto potencialmente fraccionado.</li>',
+        '<li>Nivel 2: severidad y comportamiento operativo del detector, traducidos a negocio.</li>',
+        '<li>Nivel 3: escenarios que explican la alerta y drilldown interactivo por segmento.</li>',
+        '<li>Nota metodológica: no hay etiquetas confirmadas, por eso el rendimiento se presenta como desempeño operativo del detector y no como precisión supervisada.</li>',
         '</ul>',
         '</aside>',
         '</section>',
-        f'<section class="metric-grid">{hero_cards_html}</section>',
         '<section class="section">',
         '<div class="section-head">',
         '<div>',
-        '<h2>Resumen ejecutivo</h2>',
-        '<p>Se concentran solo las tablas que mejor explican la salida del modelo y su priorizacion.</p>',
+        '<p class="section-kicker">Nivel 1 | Visión ejecutiva</p>',
+        '<h2>📌 Qué está pasando y por qué importa</h2>',
+        '<p>Abre con el volumen priorizado por el detector y tres hallazgos que ayudan a explicar el corte sin entrar aún al detalle técnico.</p>',
+        '</div>',
+        '</div>',
+        f'<div class="metric-grid">{hero_cards_html}</div>',
+        '<div class="grid-two">',
+        _render_panel(
+            title='📖 Lectura ejecutiva',
+            description='Hallazgos cortos para abrir la conversación y orientar la revisión manual.',
+            inner_html=story_highlights_html,
+        ),
+        _render_panel(
+            title='🎯 Embudo operativo del detector',
+            description='Bullet chart liviano para ver cuántas ventanas pasan de observación a backlog accionable.',
+            inner_html=priority_funnel_html,
+        ),
+        '</div>',
+        '</section>',
+        '<section class="section">',
+        '<div class="section-head">',
+        '<div>',
+        '<p class="section-kicker">Nivel 2 | Rendimiento del detector</p>',
+        '<h2>⚙️ Cómo se comporta la señal en la operación</h2>',
+        '<p>Estas vistas traducen el rendimiento del detector a volumen, severidad y presión operativa por segmento.</p>',
         '</div>',
         '</div>',
         '<div class="grid-two">',
         _render_panel(
-            title='Monitoreo por nivel',
-            description='Volumen total, promedio diario y tasa diaria media para cada nivel de alerta.',
-            inner_html=alert_monitoring_html,
+            title='⚠️ Severidad por nivel',
+            description='Ranking horizontal por nivel de alerta. Muestra volumen, participación y estabilidad diaria.',
+            inner_html=level_monitoring_html,
         ),
         _render_panel(
-            title='Escenarios mas frecuentes',
-            description='Combinaciones de escenarios activados que mas aparecen en los casos sospechosos.',
-            inner_html=scenario_counts_html,
+            title='📶 Profundidad de la señal',
+            description='Cuántos escenarios se activan por caso. A mayor profundidad, mayor intensidad de la alerta.',
+            inner_html=scenario_depth_html,
+        ),
+        '</div>',
+        '<div class="panel" style="margin-top: 16px;">',
+        '<h3>💳 Segmentos por tipo de transacción</h3>',
+        '<p>Barras horizontales por tipo de transacción para ver dónde se acumula el volumen sospechoso y la presión de alertas altas.</p>',
+        f'{alert_type_summary_html}',
+        '</div>',
+        '</section>',
+        '<section class="section">',
+        '<div class="section-head">',
+        '<div>',
+        '<p class="section-kicker">Nivel 3 | Explicabilidad y diagnóstico</p>',
+        '<h2>🧠 Qué explica la alerta y dónde concentrarla</h2>',
+        '<p>La explicabilidad se muestra por escenarios activados y por focos de concentración observables en el resultado final.</p>',
+        '</div>',
+        '</div>',
+        '<div class="grid-two">',
+        _render_panel(
+            title='🧠 Importancia de escenarios',
+            description='Barras horizontales limpias para ver qué hipótesis explican más casos y con qué monto medio aparecen.',
+            inner_html=scenario_importance_html,
         ),
         _render_panel(
-            title='Casos sospechosos por tipo',
-            description='Resumen de casos con escenario activo, abierto por tipo de transaccion.',
-            inner_html=alert_type_summary_html,
+            title='🏪 Merchants más concentrados',
+            description='Ranking de merchants dominantes dentro del universo sospechoso para priorizar revisión por contraparte observable.',
+            inner_html=top_alert_merchants_html,
         ),
         '</div>',
         '</section>',
         '<section class="section">',
         '<div class="section-head">',
         '<div>',
-        '<h2>Explorador de casos</h2>',
+        '<p class="section-kicker">Drilldown interactivo</p>',
+        '<h2>🔎 Explorar los casos de lo general a lo particular</h2>',
         (
-            '<p>Esta seccion reemplaza el dashboard con un HTML filtrable para revisar alertas, '
-            'concentraciones y motivos activados sin depender de una app web.</p>'
+            '<p>Aplica filtros y revisa cómo cambian los KPIs, la serie diaria, la concentración por merchant '
+            'y el detalle de casos. Este bloque reemplaza el dashboard sin depender de una app web.</p>'
         ),
         '</div>',
         '</div>',
@@ -1572,7 +2215,7 @@ def _build_html_document(
         '<select id="alert-level-filter"><option value="all">Todos</option></select>',
         '</div>',
         '<div class="filter-field">',
-        '<label for="transaction-type-filter">Tipo de transaccion</label>',
+        '<label for="transaction-type-filter">Tipo de transacción</label>',
         '<select id="transaction-type-filter"><option value="all">Todos</option></select>',
         '</div>',
         '<div class="filter-field">',
@@ -1584,35 +2227,35 @@ def _build_html_document(
         '<input id="end-date-filter" type="date">',
         '</div>',
         '<div class="filter-field">',
-        '<label for="search-filter">Busqueda libre</label>',
+        '<label for="search-filter">Búsqueda libre</label>',
         '<input id="search-filter" type="search" placeholder="user_id, account, merchant, motivo...">',
         '</div>',
         '<div class="filter-field">',
-        '<label for="reset-filters">Accion</label>',
+        '<label for="reset-filters">Acción</label>',
         '<button id="reset-filters" type="button">Limpiar filtros</button>',
         '</div>',
         '</div>',
         '<div id="filtered-metrics" class="metric-grid"></div>',
         '</div>',
         '<div class="panel" style="margin-top: 16px;">',
-        '<h3>Serie diaria filtrada</h3>',
-        '<p>Cada barra representa el numero de casos visibles por dia segun los filtros activos.</p>',
+        '<h3>📈 Serie diaria filtrada</h3>',
+        '<p>Gráfico de barras con tiempo en el eje X. Sirve para detectar picos de actividad del subconjunto visible.</p>',
         '<div id="filtered-bar-chart" class="bar-chart"></div>',
         '</div>',
         '<div class="panel" style="margin-top: 16px;">',
-        '<h3>Top merchants filtrados</h3>',
-        '<p>Concentracion de casos visibles sobre los merchants dominantes del subconjunto actual.</p>',
+        '<h3>🏪 Top merchants filtrados</h3>',
+        '<p>Concentración de casos visibles sobre los merchants dominantes del subconjunto actual.</p>',
         '<div id="filtered-merchant-table"></div>',
         '</div>',
         '<div class="panel" style="margin-top: 16px;">',
-        '<h3>Tabla filtrable de casos</h3>',
-        '<p>Prioriza revision manual sobre los casos con escenario activo y conserva el motivo explicable de cada ventana.</p>',
+        '<h3>🧾 Tabla filtrable de casos</h3>',
+        '<p>Último nivel de detalle para analistas: conserva el motivo explicable, la entidad y el contexto observable de cada ventana.</p>',
         '<div id="filtered-table-summary" class="summary-line"></div>',
         '<div class="table-wrap">',
         '<table>',
         '<thead>',
         '<tr>',
-        '<th>Dia</th>',
+        '<th>Día</th>',
         '<th>Nivel</th>',
         '<th>Tipo</th>',
         '<th>User</th>',
@@ -1628,7 +2271,7 @@ def _build_html_document(
         '</table>',
         '</div>',
         (
-            '<p class="note">La tabla muestra un subconjunto visible para mantener el HTML agil; '
+            '<p class="note">La tabla mantiene un subconjunto visible para que el HTML siga ligero; '
             'los KPIs y filtros se calculan sobre todos los casos sospechosos cargados en el documento.</p>'
         ),
         '</div>',
@@ -1662,14 +2305,157 @@ def _render_metric_card(metric: dict[str, str]) -> str:
     label = html.escape(metric['label'])
     value = html.escape(metric['value'])
     hint = html.escape(metric['hint'])
+    icon = html.escape(metric.get('icon', '•'))
+    context = html.escape(metric.get('context', 'Indicador'))
+    tone = html.escape(metric.get('tone', 'neutral'))
 
     return (
-        '<article class="hero-card metric-card">'
+        f'<article class="hero-card metric-card tone-{tone}">'
+        '<div class="metric-card-head">'
+        f'<span class="metric-icon">{icon}</span>'
+        f'<span class="metric-context">{context}</span>'
+        '</div>'
         f'<div class="metric-label">{label}</div>'
         f'<div class="metric-value">{value}</div>'
         f'<div class="metric-hint">{hint}</div>'
         '</article>'
     )
+
+
+def _render_story_cards(stories: list[dict[str, str]]) -> str:
+    """Renderiza tarjetas cortas de hallazgos."""
+    if len(stories) == 0:
+        return '<div class="empty-state">No hay hallazgos disponibles para esta vista.</div>'
+
+    parts = ['<div class="story-grid">']
+
+    for story in stories:
+        icon = html.escape(story.get('icon', '•'))
+        title = html.escape(story.get('title', 'Hallazgo'))
+        value = html.escape(story.get('value', 'NA'))
+        hint = html.escape(story.get('hint', ''))
+
+        parts.extend(
+            [
+                '<article class="story-card">',
+                f'<div class="story-icon">{icon}</div>',
+                '<div>',
+                f'<p class="story-title">{title}</p>',
+                f'<div class="story-value">{value}</div>',
+                f'<p class="story-hint">{hint}</p>',
+                '</div>',
+                '</article>',
+            ]
+        )
+
+    parts.append('</div>')
+
+    return ''.join(parts)
+
+
+def _render_progress_list(items: pd.DataFrame) -> str:
+    """Renderiza un embudo simple con barras de progreso."""
+    if items.empty:
+        return '<div class="empty-state">No hay etapas disponibles para este embudo.</div>'
+
+    parts = ['<div class="progress-list">']
+
+    for _, row in items.iterrows():
+        icon = html.escape(str(row.get('icon', '•')))
+        label = html.escape(str(row['label']))
+        value = html.escape(_format_int(row['value']))
+        tone = html.escape(str(row.get('tone', 'neutral')))
+        width = max(6, round(float(row['pct_total'])))
+        note = html.escape(
+            f"{_format_pct(row['pct_total'])} del universo evaluado. {row['hint']}"
+        )
+
+        parts.extend(
+            [
+                '<article class="progress-item">',
+                '<div class="progress-head">',
+                f'<div class="progress-label"><span class="metric-icon">{icon}</span><span>{label}</span></div>',
+                f'<div class="progress-value">{value}</div>',
+                '</div>',
+                '<div class="progress-track">',
+                f'<div class="progress-fill tone-{tone}" style="width: {width}%;"></div>',
+                '</div>',
+                f'<div class="progress-note">{note}</div>',
+                '</article>',
+            ]
+        )
+
+    parts.append('</div>')
+
+    return ''.join(parts)
+
+
+def _render_rank_bars(
+    data: pd.DataFrame,
+    label_col: str,
+    value_col: str,
+    note_builder: Callable[[pd.Series], str],
+    width_col: str | None = None,
+    icon_col: str | None = None,
+    tone_col: str | None = None,
+    value_formatter: Callable[[Any], str] | None = None,
+) -> str:
+    """Renderiza un ranking compacto con barras horizontales."""
+    if data.empty:
+        return '<div class="empty-state">No hay datos disponibles para esta vista.</div>'
+
+    if value_formatter is None:
+        value_formatter = _format_default
+
+    width_source = value_col
+
+    if width_col is not None:
+        width_source = width_col
+
+    max_width = float(data.loc[:, width_source].max())
+
+    if max_width <= 0:
+        max_width = 1.0
+
+    parts = ['<div class="rank-list">']
+
+    for _, row in data.iterrows():
+        label = html.escape(str(row[label_col]))
+        value = html.escape(value_formatter(row[value_col]))
+        note = html.escape(note_builder(row))
+        icon = ''
+        tone = 'neutral'
+
+        if icon_col is not None:
+            icon = html.escape(str(row.get(icon_col, '')))
+
+        if tone_col is not None:
+            tone = html.escape(str(row.get(tone_col, 'neutral')))
+
+        width = max(8, round(100 * float(row[width_source]) / max_width))
+        icon_html = ''
+
+        if icon:
+            icon_html = f'<span class="metric-icon">{icon}</span>'
+
+        parts.extend(
+            [
+                '<article class="rank-item">',
+                '<div class="rank-head">',
+                f'<div class="rank-label-wrap">{icon_html}<span class="rank-label">{label}</span></div>',
+                f'<div class="rank-value">{value}</div>',
+                '</div>',
+                '<div class="rank-track">',
+                f'<div class="rank-fill tone-{tone}" style="width: {width}%;"></div>',
+                '</div>',
+                f'<div class="rank-note">{note}</div>',
+                '</article>',
+            ]
+        )
+
+    parts.append('</div>')
+
+    return ''.join(parts)
 
 
 def _render_panel(
