@@ -26,11 +26,11 @@ def build_output_paths(
         Diccionario con las rutas de salida.
     """
     repo_root = Path(__file__).resolve().parents[2]
-    reporting_dir = repo_root / 'reporting'
+    docs_dir = repo_root / 'docs'
 
     return {
         'alert_table_parquet': output_dir / f'{file_stem}_alert_table.parquet',
-        'report_html': reporting_dir / f'{file_stem}_report.html',
+        'report_html': docs_dir / 'index.html',
     }
 
 
@@ -52,10 +52,11 @@ def run_report_pipeline(
     if not result_path.exists():
         raise FileNotFoundError(f'No se encontro la tabla resultado: {result_path}')
 
-    report_html_path = build_output_paths(
+    output_paths = build_output_paths(
         output_dir=result_path.parent,
         file_stem=result_path.stem.replace('_alert_table', ''),
-    )['report_html']
+    )
+    report_html_path = output_paths['report_html']
 
     report_html_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -79,6 +80,11 @@ def run_report_pipeline(
         html_content=html_content,
         output_path=report_html_path,
     )
+
+    nojekyll_path = report_html_path.parent / '.nojekyll'
+
+    if not nojekyll_path.exists():
+        nojekyll_path.write_text('', encoding='utf-8')
 
     logger.info('Reporte HTML: %s', report_html_path.resolve())
 
