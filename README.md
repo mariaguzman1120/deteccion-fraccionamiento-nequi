@@ -72,6 +72,12 @@ El objetivo es permitir que quien revise cada caso comprenda de forma rápida y 
 - `python/utils/detection.py`: construcción del detector.
 - `python/utils/validation.py`: apoyo para validación manual de alertas.
 
+## Documentación del modelo
+
+La documentación técnica detallada del detector, incluyendo definiciones estadísticas, reglas, escenarios y justificación metodológica, está en:
+
+- `docs/modelo.md`
+
 ## Cómo usarlo
 
 1. Crea un entorno virtual e instala dependencias.
