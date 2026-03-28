@@ -1,8 +1,6 @@
 # Detección de fraccionamiento transaccional en Nequi
 
-Este proyecto propone una forma de detectar posibles casos de fraccionamiento transaccional a partir de historial de transacciones. La idea no es mirar una operación aislada y adivinar si “se ve rara”. La lógica es otra: buscar varias transacciones pequeñas, cercanas en el tiempo, que juntas se comportan como un movimiento grande partido en pedazos.
-
-Dicho en simple, es parecido a cuando alguien reparte un pago grande en varios pagos pequeños para no llamar la atención. Cada transacción, por sí sola, puede parecer normal; la señal aparece cuando se observan en conjunto.
+Este proyecto busca la solución de una prueba técnica de científico de datos en Nequi. Se propone un enfoque para la detección de posibles casos de fraccionamiento transaccional a partir del análisis del historial de transacciones. A diferencia de metodologías que evalúan operaciones de forma aislada, no se centra en determinar si una transacción individual presenta características atípicas. En su lugar, se orienta a identificar patrones compuestos por múltiples transacciones de bajo monto, realizadas en intervalos de tiempo cercanos, que en conjunto equivalen a un movimiento de mayor magnitud deliberadamente segmentado.
 
 ## Qué problema resuelve
 
@@ -22,25 +20,11 @@ El proyecto sigue una ruta sencilla y defendible:
 6. Calcular señales que ayuden a distinguir un uso normal de un patrón sospechoso.
 7. Convertir esas señales en alertas operativas.
 
-La salida no es una “verdad absoluta”. Es una tabla priorizada de casos para revisión.
-
-## Qué mira el detector
-
-El detector combina pocas señales, pero bien elegidas:
-
-- **frecuencia**: cuántas transacciones aparecen en la ventana;
-- **monto acumulado**: cuánto suman en conjunto;
-- **similitud de montos**: si los valores son muy parecidos entre sí;
-- **contexto histórico**: si ese comportamiento rompe el patrón habitual de la entidad;
-- **destino observable**: si las transacciones se concentran o se dispersan entre comercios y sedes.
-
-Los cortes no se fijan “a ojo”. Se apoyan en percentiles observados en los datos y en comparaciones contra el comportamiento histórico de cada entidad.
-
 ## Reglas del modelo
 
-El modelo está construido como un detector basado en reglas. Eso ayuda mucho en una prueba como esta, porque cada alerta se puede explicar.
+El modelo se basa en un enfoque de detección por reglas, lo que facilita su interpretación y trazabilidad. Esta característica resulta especialmente valiosa en contextos de validación, ya que permite explicar de manera clara el origen de cada alerta generada.
 
-Las reglas principales son estas:
+Las principales reglas consideradas son las siguientes:
 
 - **frecuencia alta en 24 horas**;
 - **monto agregado alto en 24 horas**;
@@ -48,15 +32,27 @@ Las reglas principales son estas:
 - **anomalía frente al patrón histórico**;
 - **dispersión entre destinos observables**.
 
-Esas reglas no viven solas. Se combinan en escenarios; después, cada caso cae en un nivel de prioridad:
+Estas reglas no operan de manera aislada, sino que se combinan para conformar distintos escenarios de riesgo. A partir de estas combinaciones, cada caso es clasificado en un nivel de prioridad, lo que permite una gestión más eficiente de las alertas:
 
 - `pre_alerta`: una señal relevante;
 - `media`: dos señales combinadas;
 - `alta`: tres o más señales combinadas.
 
+## Qué mira el detector
+
+El detector se apoya en un conjunto acotado de señales, seleccionadas por su capacidad para capturar patrones relevantes de comportamiento:
+
+- **frecuencia**: cuántas transacciones aparecen en la ventana;
+- **monto acumulado**: cuánto suman en conjunto;
+- **similitud de montos**: si los valores son muy parecidos entre sí;
+- **contexto histórico**: si ese comportamiento rompe el patrón habitual de la entidad;
+- **destino observable**: si las transacciones se concentran o se dispersan entre comercios y sedes.
+
+Los umbrales utilizados no se definen de manera arbitraria; se fundamentan en percentiles derivados de los datos y en comparaciones con el comportamiento histórico específico de cada entidad.
+
 ## Qué entrega el proyecto
 
-El resultado esperado es una tabla de alertas con contexto suficiente para revisión manual. Entre los campos más útiles están:
+El resultado del proyecto consiste en una tabla de alertas diseñada para facilitar la revisión manual, proporcionando el contexto necesario para una evaluación ágil y fundamentada. Entre los campos más relevantes se incluyen:
 
 - entidad analítica;
 - inicio y fin de la ventana;
@@ -65,7 +61,7 @@ El resultado esperado es una tabla de alertas con contexto suficiente para revis
 - señales activadas;
 - nivel de alerta.
 
-La intención es práctica: que quien revise un caso entienda rápido por qué quedó arriba en la cola.
+El objetivo es permitir que quien revise cada caso comprenda de forma rápida y clara las razones por las cuales fue priorizado dentro del flujo de análisis.
 
 ## Estructura del repositorio
 
@@ -99,10 +95,10 @@ No debe leerse como un sistema final de decisión automática. Es, más bien, un
 
 ## Limitaciones
 
-Hay tres límites que conviene dejar explícitos:
+Hay tres limitaciones que conviene dejar explícitas:
 
-- no hay etiquetas confirmadas de fraude;
-- el receptor real no está modelado de forma directa;
-- parte del valor del detector depende de cómo se calibren y validen las reglas.
+- No se cuenta con etiquetas de fraude confirmadas.
+- El receptor real no está modelado de manera directa.
+- Una parte importante del desempeño del detector depende de la calibración y validación de las reglas.
 
-Justamente por eso el proyecto pone tanto peso en el análisis, en los supuestos y en la explicabilidad de la alerta.
+Precisamente por ello, el proyecto otorga un peso central al análisis, a la definición de supuestos y a la explicabilidad de cada alerta.
