@@ -351,12 +351,13 @@ REPORT_STYLES = """
   }
 
   .bar-chart {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(22px, 1fr));
+    display: flex;
     align-items: end;
-    gap: 8px;
-    min-height: 220px;
-    padding: 14px 10px 0;
+    gap: 10px;
+    min-height: 280px;
+    padding: 16px 14px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
     border-radius: 18px;
     background:
       linear-gradient(180deg, rgba(218, 0, 129, 0.04), transparent 50%),
@@ -365,16 +366,30 @@ REPORT_STYLES = """
   }
 
   .bar-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex: 0 0 34px;
+    display: grid;
+    grid-template-rows: 22px 180px 20px;
     gap: 8px;
+    align-items: end;
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: end;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, rgba(32, 0, 32, 0.04), rgba(32, 0, 32, 0.01));
+    border: 1px solid rgba(32, 0, 32, 0.06);
+    padding: 4px;
   }
 
   .bar {
+    height: 100%;
     width: 100%;
     min-height: 8px;
-    border-radius: 999px 999px 8px 8px;
+    border-radius: 10px 10px 6px 6px;
     background: linear-gradient(180deg, rgba(218, 0, 129, 0.88), rgba(43, 13, 43, 0.82));
     box-shadow: 0 8px 18px rgba(218, 0, 129, 0.12);
   }
@@ -382,8 +397,16 @@ REPORT_STYLES = """
   .bar-label {
     font-size: 11px;
     color: var(--muted);
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  .bar-value {
+    font-size: 11px;
+    color: var(--accent-2);
+    font-weight: 700;
+    text-align: center;
   }
 
   .empty-state {
@@ -424,9 +447,9 @@ REPORT_STYLES = """
       padding: 24px 16px 40px;
     }
 
-    .bar-label {
-      writing-mode: initial;
-      transform: none;
+    .bar-item {
+      flex-basis: 30px;
+      grid-template-rows: 20px 160px 18px;
     }
   }
 </style>
@@ -621,12 +644,15 @@ REPORT_SCRIPT = """
     const maxValue = Math.max(...entries.map((entry) => entry[1]), 1);
 
     container.innerHTML = entries.map(([day, value]) => {
-      const height = Math.max(12, Math.round((value / maxValue) * 180));
+      const height = Math.max(8, Math.round((value / maxValue) * 170));
       const shortDay = day.slice(5);
 
       return `
         <div class="bar-item" title="${escapeHtml(day)}: ${formatInteger(value)} casos">
-          <div class="bar" style="height: ${height}px;"></div>
+          <div class="bar-value">${formatInteger(value)}</div>
+          <div class="bar-track">
+            <div class="bar" style="height: ${height}px;"></div>
+          </div>
           <div class="bar-label">${escapeHtml(shortDay)}</div>
         </div>
       `;
@@ -1568,17 +1594,15 @@ def _build_html_document(
         '</div>',
         '<div id="filtered-metrics" class="metric-grid"></div>',
         '</div>',
-        '<div class="grid-split" style="margin-top: 16px;">',
-        _render_panel(
-            title='Serie diaria filtrada',
-            description='Cada barra representa el numero de casos visibles por dia segun los filtros activos.',
-            inner_html='<div id="filtered-bar-chart" class="bar-chart"></div>',
-        ),
-        _render_panel(
-            title='Top merchants filtrados',
-            description='Concentracion de casos visibles sobre los merchants dominantes del subconjunto actual.',
-            inner_html='<div id="filtered-merchant-table"></div>',
-        ),
+        '<div class="panel" style="margin-top: 16px;">',
+        '<h3>Serie diaria filtrada</h3>',
+        '<p>Cada barra representa el numero de casos visibles por dia segun los filtros activos.</p>',
+        '<div id="filtered-bar-chart" class="bar-chart"></div>',
+        '</div>',
+        '<div class="panel" style="margin-top: 16px;">',
+        '<h3>Top merchants filtrados</h3>',
+        '<p>Concentracion de casos visibles sobre los merchants dominantes del subconjunto actual.</p>',
+        '<div id="filtered-merchant-table"></div>',
         '</div>',
         '<div class="panel" style="margin-top: 16px;">',
         '<h3>Tabla filtrable de casos</h3>',
