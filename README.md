@@ -1,5 +1,9 @@
 # Detección de fraccionamiento transaccional en Nequi
 
+Sitio publicado:
+
+- https://mariaguzman1120.github.io/deteccion-fraccionamiento-nequi/
+
 Este proyecto busca la solución de una prueba técnica de científico de datos en Nequi. Se propone un enfoque para la detección de posibles casos de fraccionamiento transaccional a partir del análisis del historial de transacciones. A diferencia de metodologías que evalúan operaciones de forma aislada, no se centra en determinar si una transacción individual presenta características atípicas. En su lugar, se orienta a identificar patrones compuestos por múltiples transacciones de bajo monto, realizadas en intervalos de tiempo cercanos, que en conjunto equivalen a un movimiento de mayor magnitud deliberadamente segmentado.
 
 ## Qué problema resuelve
