@@ -78,6 +78,21 @@ La documentación técnica detallada del detector, incluyendo definiciones estad
 
 - `docs/modelo.md`
 
+## Publicación del HTML en GitHub
+
+El pipeline deja una copia publicable del reporte en:
+
+- `docs/index.html`
+
+Para que GitHub muestre ese contenido como página web:
+
+1. Ve a `Settings > Pages`.
+2. En `Build and deployment`, selecciona `Deploy from a branch`.
+3. Elige la rama principal y la carpeta `/docs`.
+4. Guarda la configuración.
+
+Con eso, GitHub Pages servirá el HTML generado como sitio estático del repositorio.
+
 ## Cómo usarlo
 
 1. Crea un entorno virtual e instala dependencias.
